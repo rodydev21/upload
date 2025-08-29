@@ -1,0 +1,193 @@
+:root {
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --text-color: #333;
+    --gray-text: #888;
+    --border-color: #e0e0e0;
+    --success-color: #28a745;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    background-image: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+header .icon {
+    font-style: normal;
+    display: inline-block;
+    transform: rotate(-45deg);
+}
+
+header p {
+    color: var(--gray-text);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.mode-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    background: var(--card-bg);
+    padding: 0.75rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.mode-selector label {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.mode-selector input:checked + label {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+.card {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1.5rem;
+}
+
+.card h2 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.card .description {
+    color: var(--gray-text);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    font-size: 1rem;
+    box-sizing: border-box;
+    margin-bottom: 0.5rem;
+}
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.file-drop-area {
+    border: 2px dashed var(--border-color);
+    border-radius: 15px;
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+.file-drop-area:hover, .file-drop-area.dragover {
+    border-color: var(--primary-color);
+    background-color: #f9f9ff;
+}
+.file-drop-area .icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+}
+.file-drop-area p {
+    margin: 0.5rem 0 0;
+    color: var(--gray-text);
+}
+.file-drop-area input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.result-card {
+    background: linear-gradient(45deg, #f0f3ff, #fdfcff);
+    border: 1px solid var(--primary-color);
+}
+.result-wrapper {
+    display: flex;
+    gap: 0.5rem;
+}
+textarea#result {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    resize: vertical;
+    background-color: #f8f9fa;
+}
+button#copy-btn {
+    padding: 0 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background-color: white;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: all 0.2s ease;
+}
+button#copy-btn:hover {
+    background-color: #f1f3f5;
+}
+button#copy-btn.copied {
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+footer {
+    margin-top: 2rem;
+    color: var(--gray-text);
+}

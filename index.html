@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة توليد الروابط</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="icon">🔗</i> أداة توليد الروابط</h1>
+            <p>حوّل ملفاتك إلى روابط مباشرة أو بيانات Base64 بسهولة</p>
+        </header>
+
+        <main>
+            <div class="mode-selector">
+                <label><input type="radio" name="mode" value="github" checked> رابط GitHub Pages</label>
+                <label><input type="radio" name="mode" value="base64"> بيانات Base64 (للأصوات القصيرة)</label>
+            </div>
+
+            <div class="card" id="github-card">
+                <h2>1. معلومات مستودع GitHub</h2>
+                <p class="description">أدخل اسم المستخدم والمستودع العام (Public) الذي رفعت إليه ملفاتك الصوتية.</p>
+                <input type="text" id="username" placeholder="اسم المستخدم الخاص بك في GitHub">
+                <input type="text" id="repo" placeholder="اسم المستودع (Repository)">
+            </div>
+
+            <div class="card">
+                <h2 id="upload-step-title">2. اختر الملف لتوليد الرابط</h2>
+                <div class="file-drop-area">
+                    <i class="icon">📁</i>
+                    <p>اسحب الملف إلى هنا أو اضغط للاختيار</p>
+                    <input type="file" id="fileInput">
+                </div>
+            </div>
+
+            <div class="card result-card hidden" id="result-card">
+                <h2>الرابط جاهز!</h2>
+                <div class="result-wrapper">
+                    <textarea id="result" readonly></textarea>
+                    <button id="copy-btn" title="نسخ إلى الحافظة">📋</button>
+                </div>
+            </div>
+            <p class="error-message hidden" id="error-message"></p>
+        </main>
+        
+        <footer>
+            <p>تمت البرمجة بواسطة Gemini AI خصيصاً لك.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
