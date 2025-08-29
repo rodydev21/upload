@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أداة توليد الروابط</title>
+    <title>أداة رفع وتوليد الروابط</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,34 +12,33 @@
 <body>
     <div class="container">
         <header>
-            <h1><i class="icon">🔗</i> أداة توليد الروابط</h1>
-            <p>حوّل ملفاتك إلى روابط مباشرة أو بيانات Base64 بسهولة</p>
+            <h1><i class="icon">🚀</i> أداة الرفع المباشر</h1>
+            <p>ارفعي ملفاتك إلى GitHub وحصلي على الرابط المباشر فوراً</p>
         </header>
 
         <main>
-            <div class="mode-selector">
-                <label><input type="radio" name="mode" value="github" checked> رابط GitHub Pages</label>
-                <label><input type="radio" name="mode" value="base64"> بيانات Base64 (للأصوات القصيرة)</label>
-            </div>
-
-            <div class="card" id="github-card">
-                <h2>1. معلومات مستودع GitHub</h2>
-                <p class="description">أدخل اسم المستخدم والمستودع العام (Public) الذي رفعت إليه ملفاتك الصوتية.</p>
-                <input type="text" id="username" placeholder="اسم المستخدم الخاص بك في GitHub">
-                <input type="text" id="repo" placeholder="اسم المستودع (Repository)">
+            <div class="card" id="settings-card">
+                <h2>1. الإعدادات (لمرة واحدة)</h2>
+                <input type="text" id="username" placeholder="اسم المستخدم في GitHub (rodydev21)">
+                <input type="text" id="repo" placeholder="اسم مستودع الأصوات (game-sounds)">
+                <div class="token-wrapper">
+                    <input type="password" id="token" placeholder="المفتاح السري (Personal Access Token)">
+                    <button id="save-settings" class="btn-save">حفظ</button>
+                </div>
             </div>
 
             <div class="card">
-                <h2 id="upload-step-title">2. اختر الملف لتوليد الرابط</h2>
+                <h2>2. ارفعي الملف</h2>
                 <div class="file-drop-area">
-                    <i class="icon">📁</i>
-                    <p>اسحب الملف إلى هنا أو اضغط للاختيار</p>
+                    <i class="icon" id="drop-icon">📁</i>
+                    <p id="drop-text">اسحبي الملف إلى هنا أو اضغطي للاختيار</p>
+                    <div class="loader hidden" id="loader"></div>
                     <input type="file" id="fileInput">
                 </div>
             </div>
 
             <div class="card result-card hidden" id="result-card">
-                <h2>الرابط جاهز!</h2>
+                <h2>تم الرفع بنجاح!</h2>
                 <div class="result-wrapper">
                     <textarea id="result" readonly></textarea>
                     <button id="copy-btn" title="نسخ إلى الحافظة">📋</button>
