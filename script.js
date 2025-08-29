@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateUIVisibility() {
         resultCard.classList.add('hidden');
         errorMessage.classList.add('hidden');
+        fileInput.value = ''; // Reset file input
         if (currentMode === 'github') {
             githubCard.classList.remove('hidden');
             uploadStepTitle.textContent = "2. اختر الملف لتوليد الرابط";
@@ -89,7 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const fileName = encodeURIComponent(file.name);
-        const link = `https://{username}.github.io/{repo}/${fileName}`;
+        
+        // The new, correct link format is here
+        const link = `https://raw.githubusercontent.com/${username}/${repo}/main/${fileName}`;
         
         displayResult(link);
     }
