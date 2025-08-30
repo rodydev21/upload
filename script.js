@@ -13,15 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const loader = document.getElementById('loader');
     const dropIcon = document.getElementById('drop-icon');
     const dropText = document.getElementById('drop-text');
+    
+    // History Modal Elements
+    const historyBtn = document.getElementById('history-btn');
+    const historyModal = document.getElementById('history-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const historyListContainer = document.getElementById('history-list-container');
 
-    // Load saved settings from browser's local storage
+    const HISTORY_KEY = 'github_upload_history';
+
+    // --- Settings Functions ---
     function loadSettings() {
         usernameInput.value = localStorage.getItem('github_username') || '';
         repoInput.value = localStorage.getItem('github_repo') || '';
         tokenInput.value = localStorage.getItem('github_token') || '';
     }
 
-    // Save settings to local storage
     saveSettingsBtn.addEventListener('click', () => {
         localStorage.setItem('github_username', usernameInput.value.trim());
         localStorage.setItem('github_repo', repoInput.value.trim());
@@ -34,15 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     });
 
-    // Handle file selection (from click or drop)
+    // --- Core Upload Function ---
     fileInput.addEventListener('change', () => {
         const file = fileInput.files[0];
         if (file) {
             uploadAndGenerateLink(file);
         }
     });
-
-    // --- Core Upload Function ---
 
     async function uploadAndGenerateLink(file) {
         const username = usernameInput.value.trim();
@@ -55,18 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Show loading state
         setLoading(true);
         hideError();
         resultCard.classList.add('hidden');
 
         try {
-            // Convert file to Base64
             const content = await fileToBase64(file);
-            const contentClean = content.split(',')[1]; // Remove the "data:..." part
-
+            const contentClean = content.split(',')[1];
             const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/${fileName}`;
-
             const response = await fetch(apiUrl, {
                 method: 'PUT',
                 headers: {
@@ -76,30 +77,101 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     message: `feat: upload ${file.name} via tool`,
                     content: contentClean,
-                    branch: 'main' // Or 'master' if that's your default branch name
+                    branch: 'main'
                 })
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                // The direct link is in data.content.download_url
-                displayResult(data.content.download_url);
+                const downloadUrl = data.content.download_url;
+                displayResult(downloadUrl);
+                saveToHistory(file.name, downloadUrl);
             } else {
-                // Show specific error from GitHub API
                 throw new Error(data.message || "فشل الرفع. تأكدي من صحة المفتاح والمستودع.");
             }
 
         } catch (error) {
             showError(error.message);
         } finally {
-            // Hide loading state
             setLoading(false);
         }
     }
 
-    // --- Helper Functions ---
+    // --- History Functions ---
+    function getHistory() {
+        const historyJson = localStorage.getItem(HISTORY_KEY);
+        return historyJson ? JSON.parse(historyJson) : [];
+    }
 
+    function saveToHistory(fileName, url) {
+        const history = getHistory();
+        const newEntry = { name: fileName, url: url, date: new Date().toISOString() };
+        // Add new entry to the beginning of the array
+        history.unshift(newEntry);
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    }
+
+    function deleteFromHistory(index) {
+        const history = getHistory();
+        history.splice(index, 1); // Remove item at the given index
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        renderHistory(); // Re-render the list
+    }
+
+    function renderHistory() {
+        const history = getHistory();
+        historyListContainer.innerHTML = ''; // Clear previous list
+
+        if (history.length === 0) {
+            historyListContainer.innerHTML = '<p>لا يوجد ملفات مرفوعة في السجل بعد.</p>';
+            return;
+        }
+
+        history.forEach((item, index) => {
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+            historyItem.innerHTML = `
+                <span class="history-item-name" title="${item.name}">${item.name}</span>
+                <div class="history-item-actions">
+                    <button class="copy-link-btn" title="نسخ الرابط">📋</button>
+                    <button class="delete-history-btn" title="حذف من السجل">🗑️</button>
+                </div>
+            `;
+            
+            // Event listener for copying link
+            historyItem.querySelector('.copy-link-btn').addEventListener('click', (e) => {
+                navigator.clipboard.writeText(item.url);
+                e.target.textContent = '✅';
+                setTimeout(() => { e.target.textContent = '📋'; }, 1500);
+            });
+
+            // Event listener for deleting entry
+            historyItem.querySelector('.delete-history-btn').addEventListener('click', () => {
+                deleteFromHistory(index);
+            });
+
+            historyListContainer.appendChild(historyItem);
+        });
+    }
+
+    historyBtn.addEventListener('click', () => {
+        renderHistory();
+        historyModal.classList.remove('hidden');
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        historyModal.classList.add('hidden');
+    });
+
+    // Close modal if clicked outside the content area
+    historyModal.addEventListener('click', (e) => {
+        if (e.target === historyModal) {
+            historyModal.classList.add('hidden');
+        }
+    });
+
+    // --- Helper Functions ---
     function fileToBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -120,11 +192,11 @@ document.addEventListener('DOMContentLoaded', () => {
             dropIcon.classList.remove('hidden');
             dropText.textContent = 'اسحبي الملف إلى هنا أو اضغطي للاختيار';
             fileInput.disabled = false;
-            fileInput.value = ''; // Reset for next upload
+            fileInput.value = '';
         }
     }
     
-    // Drag and Drop functionality
+    // Drag and Drop
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         dropArea.addEventListener(eventName, e => {
             e.preventDefault();
@@ -142,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(file) uploadAndGenerateLink(file);
     }, false);
 
-    // Copy button
+    // Main Copy button
     copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(resultTextarea.value);
         copyBtn.textContent = '✅';
