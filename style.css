@@ -7,6 +7,7 @@
     --gray-text: #888;
     --border-color: #e0e0e0;
     --success-color: #28a745;
+    --danger-color: #dc3545;
 }
 
 body {
@@ -17,7 +18,7 @@ body {
     padding: 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Changed to flex-start */
     min-height: 100vh;
 }
 
@@ -25,6 +26,18 @@ body {
     width: 100%;
     max-width: 600px;
     text-align: center;
+}
+
+header {
+    margin-bottom: 1.5rem;
+}
+
+.header-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 header h1 {
@@ -35,7 +48,7 @@ header h1 {
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
-    margin-bottom: 0.5rem;
+    margin: 0;
 }
 
 header .icon { font-style: normal; }
@@ -43,7 +56,7 @@ header .icon { font-style: normal; }
 header p {
     color: var(--gray-text);
     font-size: 1.1rem;
-    margin-bottom: 2rem;
+    margin-top: 0;
 }
 
 .card {
@@ -96,6 +109,22 @@ input[type="text"]:focus, input[type="password"]:focus {
 .btn-save.saved {
     background: var(--success-color);
 }
+.btn-secondary {
+    padding: 0.6rem 1rem;
+    font-size: 1.5rem;
+    line-height: 1;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
 
 .file-drop-area {
     border: 2px dashed var(--border-color);
@@ -189,4 +218,94 @@ footer {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* --- History Modal Styles --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background-color: var(--card-bg);
+    padding: 1.5rem 2rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 550px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    text-align: right;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+.modal-header h2 {
+    margin: 0;
+}
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--gray-text);
+}
+#history-list-container {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+.history-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.history-item:last-child {
+    border-bottom: none;
+}
+.history-item-name {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: 1rem;
+}
+.history-item-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+.history-item-actions button {
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+.history-item-actions button.copy-link-btn:hover {
+    background-color: #e9ecef;
+}
+.history-item-actions button.delete-history-btn {
+    color: var(--danger-color);
+}
+.history-item-actions button.delete-history-btn:hover {
+    background-color: #f8d7da;
+    border-color: var(--danger-color);
+}
+#history-list-container p {
+    color: var(--gray-text);
+    padding: 2rem;
+    text-align: center;
 }
