@@ -12,7 +12,10 @@
 <body>
     <div class="container">
         <header>
-            <h1><i class="icon">🚀</i> أداة الرفع المباشر</h1>
+            <div class="header-main">
+                 <h1><i class="icon">🚀</i> أداة الرفع المباشر</h1>
+                 <button id="history-btn" class="btn-secondary" title="سجل الرفع">📜</button>
+            </div>
             <p>ارفعي ملفاتك إلى GitHub وحصلي على الرابط المباشر فوراً</p>
         </header>
 
@@ -51,6 +54,20 @@
             <p>تمت البرمجة بواسطة Gemini AI خصيصاً لك.</p>
         </footer>
     </div>
+
+    <!-- History Modal -->
+    <div id="history-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>سجل الرفع</h2>
+                <button id="close-modal-btn" class="close-btn">&times;</button>
+            </div>
+            <div id="history-list-container">
+                <!-- History items will be injected here by script.js -->
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
